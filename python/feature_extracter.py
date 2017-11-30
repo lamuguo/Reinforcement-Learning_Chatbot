@@ -43,10 +43,13 @@ for conversation in raw_movie_conversations:
     for i in range(len(conversation)-1):
         con_a = utterance_dict[conversation[i+1]].strip()
         con_b = utterance_dict[conversation[i]].strip()
+
         if len(con_a.split()) <= 22 and len(con_b.split()) <= 22:
-            con_a = [refine(w) for w in con_a.lower().split()]
+            new_con_a = [refine(w) for w in con_a.lower().split()]
+            if con_count == 109:
+                print('con_a {}, new_con_a {}, con_b {}'.format(con_a, new_con_a, con_b))
             # con_a = [word_vector[w] if w in word_vector else np.zeros(WORD_VECTOR_SIZE) for w in con_a]
-            conversations.append((con_a, con_b))
+            conversations.append((new_con_a, con_b))
             traindata_count += 1
     con_count += 1
     if con_count % 1000 == 0:

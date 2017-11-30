@@ -8,6 +8,7 @@ import os
 import time
 import numpy as np
 import config
+import codecs
 
 def preProBuildWordVocab(word_count_threshold=5, all_words_path=config.all_words_path):
     # borrowed this function from NeuralTalk
@@ -66,7 +67,7 @@ def preProBuildWordVocab(word_count_threshold=5, all_words_path=config.all_words
     return wordtoix, ixtoword, bias_init_vector
 
 def parse_all_words(all_words_path):
-    raw_movie_lines = open('data/movie_lines.txt', 'r', encoding='utf-8', errors='ignore').read().split('\n')[:-1]
+    raw_movie_lines = codecs.open('data/movie_lines.txt', 'r', encoding='utf-8', errors='ignore').read().split('\n')[:-1]
 
     with codecs.open(all_words_path, "w", encoding='utf-8', errors='ignore') as f:
         for line in raw_movie_lines:
@@ -85,7 +86,7 @@ def refine(data):
 if __name__ == '__main__':
     parse_all_words(config.all_words_path)
 
-    raw_movie_lines = open('data/movie_lines.txt', 'r', encoding='utf-8', errors='ignore').read().split('\n')[:-1]
+    raw_movie_lines = codecs.open('data/movie_lines.txt', 'r', encoding='utf-8', errors='ignore').read().split('\n')[:-1]
     
     utterance_dict = {}
     with codecs.open('data/tokenized_all_words.txt', "w", encoding='utf-8', errors='ignore') as f:
@@ -96,4 +97,4 @@ if __name__ == '__main__':
             utterance_dict[line_ID] = utterance
             utterance = " ".join([refine(w) for w in utterance.lower().split()])
             f.write(utterance + '\n')
-    pickle.dump(utterance_dict, open('data/utterance_dict', 'wb'), True)
+    pickle.dump(utterance_dict, codecs.open('data/utterance_dict', 'wb'), True)
